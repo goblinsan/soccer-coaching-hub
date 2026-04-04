@@ -5,6 +5,7 @@
 export interface Team {
   id: string;
   coachId: string;
+  coachIds: string[];
   name: string;
   ageGroup?: string;
   season?: string;

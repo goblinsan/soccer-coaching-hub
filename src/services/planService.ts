@@ -31,7 +31,7 @@ export class PlanService {
     if (!team) {
       throw new Error('Team not found.');
     }
-    if (team.coachId !== input.coachId) {
+    if (!team.coachIds.includes(input.coachId)) {
       throw new Error('You do not have permission to create a plan for this team.');
     }
     const now = new Date();
@@ -67,7 +67,8 @@ export class PlanService {
     if (!plan) {
       throw new Error('Practice plan not found.');
     }
-    if (plan.coachId !== coachId) {
+    const team = this.teamRepo.findById(plan.teamId);
+    if (!team || !team.coachIds.includes(coachId)) {
       throw new Error('You do not have permission to update this plan.');
     }
     const updated: PracticePlan = { ...plan, ...input, updatedAt: new Date() };
@@ -79,7 +80,8 @@ export class PlanService {
     if (!plan) {
       throw new Error('Practice plan not found.');
     }
-    if (plan.coachId !== coachId) {
+    const team = this.teamRepo.findById(plan.teamId);
+    if (!team || !team.coachIds.includes(coachId)) {
       throw new Error('You do not have permission to delete this plan.');
     }
     this.planRepo.delete(planId);
@@ -90,7 +92,8 @@ export class PlanService {
     if (!plan) {
       throw new Error('Practice plan not found.');
     }
-    if (plan.coachId !== coachId) {
+    const team = this.teamRepo.findById(plan.teamId);
+    if (!team || !team.coachIds.includes(coachId)) {
       throw new Error('You do not have permission to modify this plan.');
     }
     const drill: Drill = { id: generateId(), ...input };
@@ -112,7 +115,8 @@ export class PlanService {
     if (!plan) {
       throw new Error('Practice plan not found.');
     }
-    if (plan.coachId !== coachId) {
+    const team = this.teamRepo.findById(plan.teamId);
+    if (!team || !team.coachIds.includes(coachId)) {
       throw new Error('You do not have permission to modify this plan.');
     }
     const drillIndex = plan.drills.findIndex((d) => d.id === drillId);
@@ -131,7 +135,8 @@ export class PlanService {
     if (!plan) {
       throw new Error('Practice plan not found.');
     }
-    if (plan.coachId !== coachId) {
+    const team = this.teamRepo.findById(plan.teamId);
+    if (!team || !team.coachIds.includes(coachId)) {
       throw new Error('You do not have permission to modify this plan.');
     }
     const drillExists = plan.drills.some((d) => d.id === drillId);
@@ -148,7 +153,8 @@ export class PlanService {
     if (!plan) {
       throw new Error('Practice plan not found.');
     }
-    if (plan.coachId !== coachId) {
+    const team = this.teamRepo.findById(plan.teamId);
+    if (!team || !team.coachIds.includes(coachId)) {
       throw new Error('You do not have permission to modify this plan.');
     }
     const planDrillIds = new Set(plan.drills.map((d) => d.id));

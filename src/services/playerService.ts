@@ -56,7 +56,7 @@ export class PlayerService {
       throw new Error('Player not found.');
     }
     const team = this.teamRepo.findById(player.teamId);
-    if (!team || team.coachId !== coachId) {
+    if (!team || !team.coachIds.includes(coachId)) {
       throw new Error('You do not have permission to update this player.');
     }
     const updated: Player = { ...player, ...input, updatedAt: new Date() };
@@ -69,7 +69,7 @@ export class PlayerService {
       throw new Error('Player not found.');
     }
     const team = this.teamRepo.findById(player.teamId);
-    if (!team || team.coachId !== coachId) {
+    if (!team || !team.coachIds.includes(coachId)) {
       throw new Error('You do not have permission to remove this player.');
     }
     this.playerRepo.delete(playerId);
