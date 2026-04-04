@@ -8,7 +8,11 @@ export class TeamRepository {
   private readonly store = new Map<string, Team>();
 
   save(team: Team): Team {
-    this.store.set(team.id, { ...team, playerIds: [...team.playerIds] });
+    this.store.set(team.id, {
+      ...team,
+      playerIds: [...team.playerIds],
+      coachIds: [...team.coachIds],
+    });
     return this.copyTeam(team);
   }
 
@@ -20,7 +24,7 @@ export class TeamRepository {
   findByCoachId(coachId: string): Team[] {
     const results: Team[] = [];
     for (const team of this.store.values()) {
-      if (team.coachId === coachId) {
+      if (team.coachIds.includes(coachId)) {
         results.push(this.copyTeam(team));
       }
     }
@@ -32,6 +36,6 @@ export class TeamRepository {
   }
 
   private copyTeam(team: Team): Team {
-    return { ...team, playerIds: [...team.playerIds] };
+    return { ...team, playerIds: [...team.playerIds], coachIds: [...team.coachIds] };
   }
 }
